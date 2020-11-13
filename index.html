@@ -5,10 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Выводим заголовок -->
   <title>Pikadu — главная</title>
+  
   <!-- Подключаем normalize -->
   <link rel="stylesheet" href="css/normalize.css">
   <!-- Подключаем стили -->
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js"></script>
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-database.js"></script>
+  
   <script src="js/main.js" defer></script>
 </head>
 <body>
@@ -25,7 +34,6 @@
           <li class="header-menu-item"><a href="#" class="header-menu-link">Горячее</a></li>
           <li class="header-menu-item"><a href="#" class="header-menu-link">Подписки</a></li>
         </ul>
-        
       </nav>
       <!-- /.header-nav -->
       <div class="input-group search">
@@ -43,159 +51,27 @@
     </div>
     <!-- /.header-wrapper -->
   </header>
-
   <div class="content">
     <main class="posts">
-      <section class="post">
-        <div class="post-body">
-          <h2 class="post-title">Заголовлок поста</h2>
-          <p class="post-text">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Языком что рот
-            маленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись ему
-            букв деревни предложения, ручеек залетают продолжил парадигматическая? Но языком сих пустился, запятой своего его
-            снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую
-            подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что
-            вопроса ведущими о решила одна алфавит! </p>
-          <p class="post-text">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Языком что рот
-            маленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись ему
-            букв деревни предложения, ручеек залетают продолжил парадигматическая? Но языком сих пустился, запятой своего его
-            снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую
-            подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что
-            вопроса ведущими о решила одна алфавит! </p>
-          <p class="post-text">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Языком что рот
-            маленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись ему
-            букв деревни предложения, ручеек залетают продолжил парадигматическая? Но языком сих пустился, запятой своего его
-            снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую
-            подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что
-            вопроса ведущими о решила одна алфавит! </p>
-          <div class="tags">
-            <a href="#" class="tag">#свежее</a>
-            <a href="#" class="tag">#новое</a>
-            <a href="#" class="tag">#горячее</a>
-            <a href="#" class="tag">#мое</a>
-            <a href="#" class="tag">#случайность</a>
-          </div>
-          <!-- /.tags -->
-        </div>
-        <!-- /.post-body -->
-        <div class="post-footer">
-          <div class="post-buttons">
-            <button class="post-button likes">
-              <svg width="19" height="20" class="icon icon-like">
-                <use xlink:href="img/icons.svg#like"></use>
-              </svg>
-              <span class="likes-counter">26</span>
-            </button>
-            <button class="post-button comments">
-              <svg width="21" height="21" class="icon icon-comment">
-                <use xlink:href="img/icons.svg#comment"></use>
-              </svg>
-              <span class="comments-counter">157</span>
-            </button>
-            <button class="post-button save">
-              <svg width="19" height="19" class="icon icon-save">
-                <use xlink:href="img/icons.svg#save"></use>
-              </svg>
-            </button>
-            <button class="post-button share">
-              <svg width="17" height="19" class="icon icon-share">
-                <use xlink:href="img/icons.svg#share"></use>
-              </svg>
-            </button>
-          </div>
-          <!-- /.post-buttons -->
-          <div class="post-author">
-            <div class="author-about">
-              <a href="#" class="author-username">arteislamov</a>
-              <span class="post-time">5 минут назад</span>
-            </div>
-            <a href="#" class="author-link"><img src="img/avatar.jpeg" alt="avatar" class="author-avatar"></a>
-          </div>
-          <!-- /.post-author -->
-        </div>
-        <!-- /.post-footer -->
-      </section>
-      <section class="post">
-        <div class="post-body">
-          <h2 class="post-title">Заголовлок поста</h2>
-          <p class="post-text">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Языком что
-            рот
-            маленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись
-            ему
-            букв деревни предложения, ручеек залетают продолжил парадигматическая? Но языком сих пустился, запятой своего его
-            снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую
-            подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что
-            вопроса ведущими о решила одна алфавит! </p>
-          <p class="post-text">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Языком что
-            рот
-            маленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись
-            ему
-            букв деревни предложения, ручеек залетают продолжил парадигматическая? Но языком сих пустился, запятой своего его
-            снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую
-            подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что
-            вопроса ведущими о решила одна алфавит! </p>
-          <p class="post-text">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Языком что
-            рот
-            маленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись
-            ему
-            букв деревни предложения, ручеек залетают продолжил парадигматическая? Но языком сих пустился, запятой своего его
-            снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую
-            подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что
-            вопроса ведущими о решила одна алфавит! </p>
-          <div class="tags">
-            <a href="#" class="tag">#свежее</a>
-            <a href="#" class="tag">#новое</a>
-            <a href="#" class="tag">#горячее</a>
-            <a href="#" class="tag">#мое</a>
-            <a href="#" class="tag">#случайность</a>
-          </div>
-          <!-- /.tags -->
-        </div>
-        <!-- /.post-body -->
-        <div class="post-footer">
-          <div class="post-buttons">
-            <button class="post-button likes">
-              <svg width="19" height="20" class="icon icon-like">
-                <use xlink:href="img/icons.svg#like"></use>
-              </svg>
-              <span class="likes-counter">26</span>
-            </button>
-            <button class="post-button comments">
-              <svg width="21" height="21" class="icon icon-comment">
-                <use xlink:href="img/icons.svg#comment"></use>
-              </svg>
-              <span class="comments-counter">157</span>
-            </button>
-            <button class="post-button save">
-              <svg width="19" height="19" class="icon icon-save">
-                <use xlink:href="img/icons.svg#save"></use>
-              </svg>
-            </button>
-            <button class="post-button share">
-              <svg width="17" height="19" class="icon icon-share">
-                <use xlink:href="img/icons.svg#share"></use>
-              </svg>
-            </button>
-          </div>
-          <!-- /.post-buttons -->
-          <div class="post-author">
-            <div class="author-about">
-              <a href="#" class="author-username">arteislamov</a>
-              <span class="post-time">5 минут назад</span>
-            </div>
-            <a href="#" class="author-link"><img src="img/avatar.jpeg" alt="avatar" class="author-avatar"></a>
-          </div>
-          <!-- /.post-author -->
-        </div>
-        <!-- /.post-footer -->
-      </section>
     </main>
     <!-- /.posts -->
+    <form action="#" class="add-post">
+      <input type="text" name="title" class="add-title" placeholder="Заголовок поста">
+      <textarea name="text" id="text" class="add-text" placeholder="Текст вашего поста"></textarea>
+      <input type="text" name="tags" class="add-tags" placeholder="Добавьте теги через запятую">
+      <div class="add-buttons">
+        <button type="submit" class="button add-button">
+          <svg class="icon icon-fire">
+            <use xlink:href="img/icons.svg#fire"></use>
+          </svg>
+          Опубликовать пост
+        </button>
+      </div>
+    </form>
     <aside class="sidebar">
-
       <div class="login">
         <form class="login-form">
           <h2 class="login-title">Авторизация</h2>
-
           <input type="email" 
             class="login-input login-email" 
             name="email"
@@ -237,7 +113,6 @@
         <!-- /.user-container -->
         <form class="edit-container">
           <h2 class="edit-title">Редактировать</h2>
-
           <label class="edit-label">Ваш логин
             <input type="text" 
                   class="edit-input edit-username"
@@ -254,12 +129,10 @@
                   placeholder="URL-photo">
           </label>
           <!-- /.edit-photo -->
-
           <button class="edit-btn">Сохранить</button>
         </form>
       </div>
       <!-- /.user -->
-
       <nav class="sidebar-nav">
         <ul class="sidebar-menu">
           <li class="sidebar-menu-item">
@@ -309,6 +182,5 @@
     <!-- /.sidebar -->
   </div>
   <!-- /.content -->
-  
 </body>
 </html>
