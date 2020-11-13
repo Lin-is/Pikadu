@@ -1,11 +1,9 @@
 "use strict";
 
 
-
 //--------------------------------------------------------------------------
 //------ADD FIREBASE--------------------------------------------------------
 //--------------------------------------------------------------------------
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJuB73MeqUoTGHggxIUTuhe3R9xpoDO-w",
@@ -35,6 +33,7 @@ const loginForm = document.querySelector('.login-form');
 const emailInput = document.querySelector('.login-email');
 const passwordInput = document.querySelector('.login-password');
 const loginSignup = document.querySelector('.login-signup');
+const loginForget = document.querySelector('.login-forget');
 
 const userElem = document.querySelector('.user');
 const userNameElem = document.querySelector('.user-name');
@@ -51,32 +50,7 @@ const postsWrapper = document.querySelector('.posts');
 const buttonNewPost = document.querySelector('.button-new-post');
 const addPostElem = document.querySelector('.add-post');
 
-//--------------------------------------------------------------------------
-//------USERS DATA----------------------------------------------------------
-//--------------------------------------------------------------------------
-
-const listUsers = [
-  {
-    id: '01',
-    email: 'maks@mail.com',
-    password: '12345',
-    displayName: 'MaksJS',
-    photo: 'https://www.meme-arsenal.com/memes/b877babd9c07f94b952c7f152c4e264e.jpg'
-  },
-  {
-    id: '02',
-    email: 'kate@mail.com',
-    password: '123456',
-    displayName: 'KateKillMaks',
-    photo: 'https://archilab.online/images/1/123.jpg'
-  },
-  {
-    id: '03',
-    email: 'igor@mail.com',
-    password: '123',
-    displayName: 'IgorIgor'
-  },
-];
+const DEFAULT_PHOTO = userAvatarElem.src;
 
 //--------------------------------------------------------------------------
 //------WORK WITH USER------------------------------------------------------
@@ -86,6 +60,18 @@ const setUsers = {
 
   user: null,
 
+  initUser(handler) {
+    firebase.auth().onAuthStateChanged(user =>{
+      if (user) {
+        this.user = user;
+      } else {
+        this.user = null;
+      }
+      if (handler) {
+        handler();
+      }
+    });
+  },
   //registration
   signUp(email, password, handler) {
     if (!regExpValidEmail.test(email)) {
@@ -98,15 +84,29 @@ const setUsers = {
       return;
     }
 
-    if (!this.getUser(email)) {
-      const user = { email, password, displayName: email.slice(0, email.indexOf('@'))};
-      listUsers.push(user);
-      this.authorizedUser(user);
-      handler();
-    } else {
-      alert('Пользователь с таким email уже зарегистрирован');
-    }
+    firebase.auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(data => { 
+              this.editUser(email.substring(0, email.indexOf('@')), null, handler);
+            })
+            .catch(err => {
+              const errCode = err.code;
+              const errMessage = err.message;
+
+              if (errCode === 'auth/weak-password') {
+                console.log(errMessage);
+                alert('Слабый пароль');
+              } else if (errCode === 'auth/email-already-in-use') {
+                console.log(errMessage);
+                alert('Этот email уже используется');
+              } else {
+                alert(errMessage);
+              }
+
+              console.log(err);
+            });
   },
+  
   //authorization
   logIn(email, password, handler) { 
     if (!regExpValidEmail.test(email)) {
@@ -114,40 +114,56 @@ const setUsers = {
       return;
     }
 
-    const user = this.getUser(email);
+    firebase.auth().signInWithEmailAndPassword(email, password).catch(err => {
+      const errCode = err.code;
+      const errMessage = err.message;
 
-    if (user && user.password === password) {
-      this.authorizedUser(user);
-      handler();
-    } else {
-      alert('Пользователь с такими данными не найден');
-    }
+      if (errCode === 'auth/wrong-password') {
+        console.log(errMessage);
+        alert('Неверный пароль');
+      } else if (errCode === 'auth/user-not-found') {
+        console.log(errMessage);
+        alert('Пользователь не найден');
+      } else {
+        alert(errMessage);
+      }
+
+      console.log(err);
+    });
   },
+
   //edit user profile info
-  editUser(username, userPhoto, handler) {
-    if (username) {
-      this.user.displayName = username;
-    }
+  editUser(displayName, photoURL, handler) {
+    const user = firebase.auth().currentUser;
 
-    if (userPhoto) {
-      this.user.photo = userPhoto;
+    if (displayName) {
+      if (photoURL) {
+        user.updateProfile({
+          displayName,
+          photoURL
+        }).then(handler);
+      } else {
+        user.updateProfile({
+          displayName
+        }).then(handler);
+      }
     }
-
-    handler();
   },
+
+  sendForget(email) {
+    firebase.auth().sendPasswordResetEmail(email)
+    .then(() => {
+      alert('Письмо отправлено');
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  },
+
   //out of profile
-  logOut(handler) {    
-    this.user = null;
-    handler();  
+  logOut() {  
+    firebase.auth().signOut(); 
   },
-  //get user from common user list
-  getUser(email) {  
-    return listUsers.find(item => item.email === email);
-  },
-  //set info about authorized user into this
-  authorizedUser(user) {  
-    this.user = user;
-  } 
 };
 
 //--------------------------------------------------------------------------
@@ -156,47 +172,36 @@ const setUsers = {
 
 const setPosts = {
 
-  allPosts: [
-    {
-      title: 'Заголовок поста',
-      text: 'Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Языком что ротмаленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись ему букв деревни предложения, ручеек залетают продолжил парадигматическая ? Но языком сих пустился, запятой своего его снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую подпоясал ? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что вопроса ведущими о решила одна алфавит!',
-      tags: ['свежее', 'новое', 'горячее', 'мое','случайность'],
-      author: {
-        displayName: 'maks',
-        photo: 'https://www.meme-arsenal.com/memes/b877babd9c07f94b952c7f152c4e264e.jpg'
-      },
-      date: '11.11.2020, 20:54:00',
-      likes: 45,
-      comments: 12,
-    },
-    {
-      title: 'Новый пост',
-      text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui, rem! Recusandae cum distinctio reprehenderit! Dolor quo veniam, hic esse, tempora sequi, laborum eveniet suscipit perspiciatis odio id. Voluptate quo obcaecati mollitia minus ex amet eligendi voluptas ipsa, inventore quis provident. Vero quae ex temporibus provident quo autem unde officia aliquam dolore eius quisquam, ad mollitia sapiente sequi assumenda atque tempora.',
-      tags: ['свежее', 'новое', 'мое', 'случайность'],
-      author: {
-        displayName: 'Kate',
-        photo: 'https://archilab.online/images/1/123.jpg'
-      },
-      date: '10.11.2020, 16:04:35',
-      likes: 113,
-      comments: 54,
-    }
-  ],
+  allPosts: [],
 
   addPost(title, text, tags, handler) {
-    this.allPosts.unshift({title, text, tags: tags.split(',').map(item => item.trim()),
+    const user = firebase.auth().currentUser;
+
+    this.allPosts.unshift({
+      id: `postID${(+new Date()).toString(16)}-${user.uid}`,
+      title, 
+      text, 
+      tags: tags.split(',').map(item => item.trim()),
       author: {
         displayName: setUsers.user.displayName,
-        photo: setUsers.user.photo,
+        photo: setUsers.user.photoURL,
       },
       date: new Date().toLocaleString(),
       likes: 0,
       comments: 0,
     });
 
-    if (handler) {
+    firebase.database().ref('post').set(this.allPosts)
+            .then(() => {
+              this.getPosts(handler);
+            });
+  },
+
+  getPosts(handler) {
+    firebase.database().ref('post').on('value', snapshot => {
+      this.allPosts = snapshot.val() || [];
       handler();
-    }
+    });
   }
 };
 
@@ -260,7 +265,7 @@ const toggleAuthDom = () => {
     loginElem.style.display = 'none';
     userElem.style.display = '';
     userNameElem.textContent = user.displayName;
-    userAvatarElem.src = user.photo || userAvatarElem.src;
+    userAvatarElem.src = user.photoURL || DEFAULT_PHOTO;
     buttonNewPost.classList.add('visible');
   } else {
     loginElem.style.display = '';
@@ -303,7 +308,7 @@ const init = () => {
 
   exitElem.addEventListener('click', event => {
     event.preventDefault();
-    setUsers.logOut(toggleAuthDom);
+    setUsers.logOut();
   });
 
   editElem.addEventListener('click', event => {
@@ -341,14 +346,20 @@ const init = () => {
       alert('Слишком короткий пост');
       return;
     }
-
     setPosts.addPost(title.value, text.value, tags.value, showAllPosts);
     addPostElem.classList.remove('visible');
     addPostElem.reset();
   });
 
-  showAllPosts();
-  toggleAuthDom();
+  loginForget.addEventListener('click', event => {
+    event.preventDefault();
+
+    setUsers.sendForget(emailInput.value);
+    emailInput.value = '';
+  });
+
+  setUsers.initUser(toggleAuthDom);
+  setPosts.getPosts(showAllPosts);
 }
 
 //run js after loading DOM
